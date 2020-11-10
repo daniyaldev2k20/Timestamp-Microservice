@@ -27,15 +27,15 @@ app.get("/api/timestamp/:date_string", (req, res) => {
   const dateString = req.params.date_string;
   let date;
 
-  if (dateString !== "") {
+  if (!dateString) {
+    date = new Date();
+  } else {
     if (typeof dateString == "string") {
-      let parsedDate = parseInt(dateString, 2);
+      let parsedDate = parseInt(dateString);
       date = new Date(parsedDate);
     } else {
       date = new Date(date_string);
     }
-  } else {
-    date = new Date();
   }
 
   if (date.toString() !== "Invalid Date") {
