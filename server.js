@@ -23,36 +23,32 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
-app.get("api/timestamp", (req, res) => {
-  const date = new Date();
-  res.json({
-    unix: date.getTime(),
-    utc: date.toUTCString(),
-  });
-});
+// API endpoint as requested in user stories
+app.get("/api/timestamp/:dateString?", (req, res) => {
+  const dateString = req.params.dateString;
+  let date;
 
-app.get("/api/timestamp/:date_string", (req, res) => {
-  const dateString = req.params.date_string;
+  if (dateString === "") {
+    date = new Date();
+  } else {
+    if (isNaN(dateString)) {
+      date = new Date(dateString);
+    } else {
+      date = new Date(parseInt(dateString));
+    }
+  }
 
-  if (typeof parseInt(dateString) === "number") {
-    const unixTime = new Date(parseInt(dateString));
-    res.json({
-      unix: unixTime.getTime(),
-      utc: unixTime.toUTCString(),
+  // if the date is invalid send the error response
+  // else send the response in the requested format
+  if (date.toString() === "Invalid Date") {
+    res.send({
+      error: date.toString(),
     });
   } else {
-    const date = new Date(dateString);
-
-    if (date == "Invalid Date") {
-      res.json({
-        error: "Invalid Date",
-      });
-    } else {
-      res.json({
-        unix: date.getTime(),
-        utc: date.toUTCString(),
-      });
-    }
+    res.send({
+      unix: date.getTime(),
+      utc: date.toUTCString(),
+    });
   }
 });
 // listen for requests :)
