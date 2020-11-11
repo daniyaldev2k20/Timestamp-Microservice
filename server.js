@@ -23,30 +23,36 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
+app.get("api/timestamp", (req, res) => {
+  const date = new Date();
+  res.json({
+    unix: date.getTime(),
+    utc: date.toUTCString(),
+  });
+});
+
 app.get("/api/timestamp/:date_string", (req, res) => {
   const dateString = req.params.date_string;
-  let date;
 
-  if (!dateString) {
-    date = new Date();
+  if (typeof parseInt(dateString) === "number") {
+    const unixTime = new Date(parseInt(dateString));
+    res.json({
+      unix: unixTime.getTime(),
+      utc: unixTime.toUTCString(),
+    });
   } else {
-    if (typeof dateString == "string") {
-      let parsedDate = parseInt(dateString);
-      date = new Date(parsedDate);
+    const date = new Date(dateString);
+
+    if (date == "Invalid Date") {
+      res.json({
+        error: "Invalid Date",
+      });
     } else {
-      date = new Date(date_string);
+      res.json({
+        unix: date.getTime(),
+        utc: date.toUTCString(),
+      });
     }
-  }
-
-  if (date.toString() !== "Invalid Date") {
-    res.json({
-      unix: date.getTime(),
-      utc: date.toUTCString(),
-    });
-  } else {
-    res.json({
-      error: date.toString(),
-    });
   }
 });
 // listen for requests :)
