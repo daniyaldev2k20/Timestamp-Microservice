@@ -28,10 +28,10 @@ app.get("/api/timestamp/:dateString?", (req, res) => {
   const dateString = req.params.dateString;
   let date;
 
-  if (dateString === "") {
+  if (!dateString) {
     date = new Date();
   } else {
-    if (isNaN(dateString)) {
+    if (Number.isNaN(dateString)) {
       date = new Date(dateString);
     } else {
       date = new Date(parseInt(dateString));
