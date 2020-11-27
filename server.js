@@ -42,12 +42,12 @@ app.get('/api/timestamp/:date?', (req, res) => {
   }
 
   if (date_string.toString() === 'Invalid Date') {
-    res.send({
+    res.json({
       error: date_string.toString(),
     });
   } else {
-    res.send({
-      unix: date_string.getTime(),
+    res.json({
+      unix: date_string.valueOf(),
       utc: date_string.toUTCString(),
     });
   }
@@ -57,4 +57,5 @@ app.get('/api/timestamp/:date?', (req, res) => {
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+
 
