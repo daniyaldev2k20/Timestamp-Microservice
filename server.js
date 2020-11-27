@@ -47,7 +47,7 @@ app.get('/api/timestamp/:date?', (req, res) => {
     });
   } else {
     res.send({
-      unix: date_string,
+      unix: date_string.getTime(),
       utc: date_string.toUTCString(),
     });
   }
@@ -57,3 +57,4 @@ app.get('/api/timestamp/:date?', (req, res) => {
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+
