@@ -24,16 +24,19 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get('/api/timestamp', (req, res) => {
+  const unix = Date.now();
+  const utc= Date();
+
+  res.json({
+      unix,
+      utc
+    })
+})
+
 app.get('/api/timestamp/:date', (req, res) => {
   let date = req.params.date;
   let dateObj;
-
-  if(!date){
-    return res.json({
-      unix: Date.now(),
-      utc: Date()
-    })
-  }
 
   if(!isNaN(date)){
     dateObj = new Date(parseInt(date))
@@ -62,5 +65,4 @@ app.get('/api/timestamp/:date', (req, res) => {
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
-
 
